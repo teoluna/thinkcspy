@@ -1,10 +1,10 @@
 import turtle
 
-def drawPoly(someturtle, somesides, somesize):
+def drawPoly(turtle, sides, size):
     """Make turtle someturtle draw a square with somesides somesize."""
-    for i in range(somesides):
-        someturtle.forward(somesize)
-        someturtle.left(360/somesides)
+    for i in range(sides):
+        turtle.forward(size)
+        turtle.left(360/sides)
 
 wn = turtle.Screen()       # set up the window and its attributes
 wn.bgcolor("lightyellow")

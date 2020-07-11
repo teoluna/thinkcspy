@@ -33,15 +33,19 @@ border = 10
 
 wn = turtle.Screen()             # set up the window and its attributes
 wn.setworldcoordinates(0-border, 0-border, 40*numbars+border, maxheight+border+5)
-wn.bgcolor("mistyrose")
+wn.bgcolor("lightgreen")
 
 tess = turtle.Turtle()           # create tess and set some attributes
-tess.color("maroon")
-tess.fillcolor("rosybrown")
 tess.pensize(3)
 
 
 for a in xs:                  # draw a bar chart
+    if a >= 200:
+        tess.fillcolor("red")
+    elif a >= 100:
+        tess.fillcolor("yellow")
+    else:
+        tess.fillcolor("green")
     drawBar(tess, a)
 
 wn.exitonclick()

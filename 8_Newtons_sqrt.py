@@ -1,9 +1,10 @@
 def newtonSqrt(n):
     approx = 0.5 * n
-    for i in range(6):
-        betterapprox = 0.5 * (approx + n/approx)
-        print(betterapprox)
+    betterapprox = 0.5 * (approx + n/approx)
+    while betterapprox != approx:
         approx = betterapprox
+        betterapprox = 0.5 * (approx + n/approx)
+        print("Approximate result:", betterapprox)
     return betterapprox
 
-print(newtonSqrt(25))
+print("Final result:", newtonSqrt(25))

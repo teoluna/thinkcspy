@@ -1,7 +1,7 @@
-def countWords(lst):
+def countWords(lst, wordlen=5):
     counter = 0
     for word in lst:
-        if len(word) == 5:
+        if len(word) == wordlen:
             counter = counter + 1        
     return counter
 

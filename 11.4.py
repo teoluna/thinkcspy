@@ -1,7 +1,6 @@
 import turtle
 
 file = 'labdata.txt'
-t = turtle.Turtle(shape = 'circle')    # create turtle t 
 
 def transform_data(file):
     """Function that reads the data from file and 
@@ -59,49 +58,36 @@ def findRegression():
     for tup in data:
         y = y_mean + m*(tup[0] - x_mean)
         y_best += [y]
-    
+
     return y_best
 
-def plotRegression():
-    """Uses a turtle t to draw a best fit line through the points with color"""
-    data = transform_data(file)
+def plotRegression(t):
+    """Uses a turtle t to plot the points 
+    and draw a best fit line through the points"""
     
-    x_list = [int(i[0]) for i in data]
+    x_list = [int(i[0]) for i in transform_data(file)]
     y_list = findRegression()
     
-    maxheight = max(y_list)
-    minheight = min(y_list)
-    numbars = len(y_list)
-    border = 10
-
-    if minheight < 0:
-        par = minheight - border
-    else:
-        par = 0
-
-    wn = turtle.Screen()             # set up the window and its attributes
-    wn.setworldcoordinates(0-border, par, 40*numbars+border, maxheight+border+5)
+    wn = turtle.Screen()
     wn.bgcolor("lightgreen")
     
     # plot points
     for i in range(len(x_list)):
-        turtle.penup()
-        turtle.setposition(x_list[i], y_list[i])
-        turtle.stamp()
-
+        t.color('blue')
+        t.penup()
+        t.setposition(x_list[i], y_list[i])
+        t.stamp()
+        print(x_list[i], y_list[i])
+        
     # plot best y
-    turtle.penup()
-    turtle.setposition(0, 0)
-    turtle.color('blue')
-    
-    y_best = findRegression()
-    
+    t.penup()
+    t.setposition(0, 0)
+    t.color('red')
     for i in range(len(x_list)):
-        turtle.setposition(x_list[i], y_best[i])
-        turtle.pendown()
-
-    return (min(x_list), min(y_list), max(x_list), max(y_list))
-    
+        t.setposition(x_list[i], y_list[i])
+        t.pendown()
+        
     wn.exitonclick()
 
-plotRegression()
+tess = turtle.Turtle(shape = 'classic')    # create turtle tess
+plotRegression(tess)

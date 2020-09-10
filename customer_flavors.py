@@ -1,6 +1,13 @@
 from flask import Flask, request
 from datetime import datetime
 import os
+import mysql.connector
+
+# create connection to the db
+mydb = mysql.connector.connect(user='root', password='root', 
+host='127.0.0.1', database='mydb')
+
+mycursor = mydb.cursor()
 
 app = Flask(__name__)
 
@@ -8,11 +15,11 @@ app = Flask(__name__)
 def home():
     return """
         <html><body>
-            <h2>Welcome!</h2>
+            <h2>New customer record</h2>
             <form action="/base">
                 What's your name? <input type='text' name='username'><br>
                 What's your favorite food? <input type='text' name='favfood'><br>
-                <input type='submit' value='Continue'>
+                <input type='submit' value='Submit'>
             </form>
         </body></html>"""
 
@@ -21,12 +28,16 @@ def create_list():
     username = request.args.get('username', 'Danylo')
     favfood = request.args.get('favfood', 'Cookies')
   
-    with open('customer_food_data.csv', 'a') as f:
-        f.write(username + "," + favfood + "\n") 
+    sql = "INSERT INTO customers (name, food) VALUES (%s, %s)"
+    val = (username, favfood)
+    mycursor.execute(sql, val)
+
+    # make changes to the table 
+    mydb.commit()
     
     return """
         <html><body>
-            "You have add data."
+            "You have add data successfully."
         </body></html>"""
 
 @app.route('/customer_food')
@@ -38,15 +49,12 @@ def show_data():
     response2 = """
         </body></html>"""
     
-    if os.path.exists('customer_food_data.csv'):
-        with open('customer_food_data.csv', 'r+') as f:
-            
-            for line in f:
-                values = line.split(',')
+    mycursor.execute("SELECT * FROM customers")
+    myresult = mycursor.fetchall()
 
-                if len(values) > 1:
-                    template = values[0] + " " + values[1]
-                    response += str(template) + "<br>"
+    for x in myresult:
+        template = x[1] + " " + x[2] + "<br>"
+        response += template
 
     return response + response2
 
